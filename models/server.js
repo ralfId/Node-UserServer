@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors');
+const db = require('../db/connection');
 
 class Server {
 
@@ -7,18 +8,26 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
-         //middlewares de la app
-         this.middlewares();
-         
-        //rutas de la app
+        this.dbConnection();
+        this.middlewares();
         this.routes();
-       
 
     }
 
+    async dbConnection() {
+        try {
+            await db.authenticate();
+            console.log('Conectado a la BD');
+        } catch (error) {
+            console.log(error)
+            throw new Error('Error al inicializar la BD');
+        }
+    }
+
+
     routes() {
 
-        this.app.use( '/api/usuarios', require('../routes/users'));
+        this.app.use('/api/usuarios', require('../routes/users'));
     }
 
     listen() {
