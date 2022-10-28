@@ -27,7 +27,8 @@ class Server {
 
     routes() {
 
-        this.app.use('/api/usuarios', require('../routes/users'));
+        this.app.use('/api/usuarios', require('../routes/usuarios'));
+        this.app.use('/api/paises', require('../routes/paises'));
     }
 
     listen() {
