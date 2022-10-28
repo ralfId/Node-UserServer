@@ -34,12 +34,11 @@ const usersPost = async (req, res = response) => {
     try {
 
         /**
-         * Validaciones asumiendo que exista un usuario con el mismo ID_Pais y Apellidos
+         * Validacion para que no exista un usuario con el mismo ID_Pais y Apellidos
          */
-        const usuario = await Usuario.findOne({ where: { Apellidos } });
-        const usuarioPais = await Usuario.findOne({ where: { ID_Pais } });
+        const usuario = await Usuario.findOne({ where: { Apellidos, ID_Pais } });
 
-        if (usuario && usuarioPais) {
+        if (usuario) {
             return res.status(400).json({
                 msg: 'El usuario ya existe'
             });
@@ -69,14 +68,59 @@ const usersPost = async (req, res = response) => {
 
 }
 
-const usersPut = (req = request, res = response) => {
+const usersPut = async (req = request, res = response) => {
+    const { id } = req.params;
+    const { ID_Pais, Apellidos, Fecha_Nacimiento } = req.body;
+    try {
 
 
-    res.json({ msg: 'API put - controller' })
+        const usuario = await Usuario.findByPk(id);
+        if (!usuario) {
+            return res.status(400).json({ msg: `No se encontro usuario con el id ${id}` });
+        }
+
+        if (usuario.ID_Pais !== ID_Pais) {
+            const usuarioRepetido = await Usuario.findOne({ where: { Apellidos, ID_Pais } });
+            if (usuarioRepetido) {
+                return res.status(400).json({
+                    msg: 'Ya existe un usuario con el mismo Nombre y Apellidos'
+                });
+            }
+        }
+
+        if (Fecha_Nacimiento) {
+            usuario.Fecha_Nacimiento = calcularEdad(Fecha_Nacimiento);
+        }
+
+        usuario.update(req.body);
+
+        return res.json({ data: usuario });
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor. No se pudo actualizar el usuario' });
+    }
 }
 
-const usersDelete = (req, res) => {
-    res.json({ msg: 'API delete - controller' })
+const usersDelete = async(req, res) => {
+    const { id } = req.params;
+
+    try {
+        const usuario = await Usuario.findByPk(id);
+        if (!usuario) {
+            return res.status(400).json({ msg: `No se encontro usuario con el id ${id}` });
+        }
+
+        usuario.destroy();
+        
+        return res.json({ msg: 'Usuario eliminado' });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor. No se pudo eliminar el usuario' });
+    }
+
 }
 
 
