@@ -11,7 +11,7 @@ const Usuario = db.define('Usuario', {
         type: DataTypes.INTEGER,
         references: {
             model: Pais,
-            key: 'ID_Pais'
+            key: 'ID_Pais',
         }
     },
     Nombre: {
@@ -32,16 +32,19 @@ const Usuario = db.define('Usuario', {
     Edad: {
         type: DataTypes.INTEGER,
     },
+    Sitio_Trabajo: {
+        type: DataTypes.STRING,
+    },
     createdAt: {
         type: DataTypes.DATE,
     },
     updatedAt: {
         type: DataTypes.DATE,
     }
-},{
+}, {
     tableName: 'Usuario'
 });
 
-Usuario.hasOne(Pais, {foreignKey: 'ID_Pais', foreignKeyConstraint: true});
+Usuario.belongsTo(Pais, { foreignKey: 'ID_Pais', foreignKeyConstraint: true });
 
 module.exports = Usuario;

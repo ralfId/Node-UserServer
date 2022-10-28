@@ -1,10 +1,31 @@
 const { response, request } = require('express');
 const { calcularEdad } = require('../helpers/globalHelpers');
 const Usuario = require('../models/Usuario');
+const Pais = require('../models/Pais');
 
-const usersGet = (req, res = response) => {
-    res.status(201).json({ msg: 'API get - Users Controller' })
+
+const usersGet = async (req = request, res = response) => {
+    try {
+
+        const allUsers = await Usuario.findAll({ include: { model: Pais, attributes: ['ID_Pais', 'Nombre'] } });
+
+        if (allUsers.length === 0) {
+            return res.status(400).json({
+                msg: 'No hay usuarios registrados'
+            });
+        } else {
+
+            return res.json({ data: allUsers });
+        }
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor. No se pudo obtener los usuarios' });
+    }
+
 }
+
 
 const usersPost = async (req, res = response) => {
 
@@ -49,9 +70,9 @@ const usersPost = async (req, res = response) => {
 }
 
 const usersPut = (req = request, res = response) => {
-  
 
-    res.json({ msg: 'API put - controller'})
+
+    res.json({ msg: 'API put - controller' })
 }
 
 const usersDelete = (req, res) => {
