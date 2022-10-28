@@ -5,7 +5,8 @@ const Pais = require('./Pais');
 const Usuario = db.define('Usuario', {
     ID_Usuario: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     ID_Pais: {
         type: DataTypes.INTEGER,

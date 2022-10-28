@@ -52,14 +52,10 @@ const usersPost = async (req, res = response) => {
             });
         }
 
-        const crear_Usuario = new Usuario({ ...userReq, Edad });
+        const data = await Usuario.create({ ...userReq, Edad });
 
-        const data = await crear_Usuario.save();
+        res.json({ data });
 
-        res.json({
-
-            data
-        })
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Error en el servidor. No se pudo crear el usuario' });
@@ -103,7 +99,7 @@ const usersPut = async (req = request, res = response) => {
     }
 }
 
-const usersDelete = async(req, res) => {
+const usersDelete = async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -113,9 +109,9 @@ const usersDelete = async(req, res) => {
         }
 
         usuario.destroy();
-        
+
         return res.json({ msg: 'Usuario eliminado' });
-        
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Error en el servidor. No se pudo eliminar el usuario' });
