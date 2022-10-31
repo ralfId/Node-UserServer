@@ -9,7 +9,7 @@ const getPaises = async (req = request, res = response) => {
         if (paises.length > 0) {
             return res.status(200).json({
                 count: paises.length,
-                paises
+                data: paises
             });
         } else {
             return res.status(200).json({

@@ -15,7 +15,7 @@ const usersGet = async (req = request, res = response) => {
             });
         } else {
 
-            return res.json({ data: allUsers });
+            return res.json({count: allUsers.length, data: allUsers });
         }
 
 
