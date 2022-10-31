@@ -1,18 +1,18 @@
 const { DataTypes } = require('sequelize');
 const db = require('../db/connection');
 
-const Pais = db.define('Pais', { 
-    ID_Pais:{
+const Pais = db.define('Pais', {
+    ID_Pais: {
         type: DataTypes.INTEGER,
         primaryKey: true,
     },
-    Nombre:{
+    Nombre: {
         type: DataTypes.STRING,
     },
-    createdAt:{
+    createdAt: {
         type: DataTypes.DATE,
     },
-    updatedAt:{
+    updatedAt: {
         type: DataTypes.DATE,
     }
 });

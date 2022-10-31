@@ -1,6 +1,8 @@
 const express = require('express')
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express')
 const db = require('../db/connection');
+const { swaggerSpec } = require('../api_docs/swagger_config');
 
 class Server {
 
@@ -8,7 +10,7 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
-        this.dbConnection();
+        //this.dbConnection();
         this.middlewares();
         this.routes();
 
@@ -44,6 +46,8 @@ class Server {
         this.app.use(cors());
         //lectura y parseo del body en formato json
         this.app.use(express.json());
+        //documentacion
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     }
 }
 
