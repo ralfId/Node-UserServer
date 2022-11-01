@@ -85,12 +85,19 @@ const usersPut = async (req = request, res = response) => {
         }
 
         if (Fecha_Nacimiento) {
-            usuario.Fecha_Nacimiento = calcularEdad(Fecha_Nacimiento);
+            usuario.Edad = calcularEdad(Fecha_Nacimiento);
         }
+        usuario.ID_Pais = ID_Pais;
+        usuario.Nombre = req.body.Nombre;
+        usuario.Apellidos = Apellidos;
+        usuario.Fecha_Nacimiento = Fecha_Nacimiento;
+        usuario.Sitio_Trabajo = req.body.Sitio_Trabajo;
 
-        usuario.update(req.body);
 
-        return res.json({ data: usuario });
+        //usuario.update(req.body);
+        const data = await usuario.save();
+
+        return res.json({ data });
 
 
     } catch (error) {
