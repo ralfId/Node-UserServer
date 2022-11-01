@@ -48,7 +48,7 @@ class Server {
         //lectura y parseo del body en formato json
         this.app.use(express.json());
         //documentacion
-        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+        this.app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
     }
 }
 

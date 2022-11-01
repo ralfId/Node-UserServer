@@ -5,8 +5,61 @@ const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
+/**
+ * @openapi
+ * /api/usuarios:
+ *   get:
+ *    tags:
+ *    - Usuarios
+ *    responses:
+ *      200:
+ *        description: Return a list of users.
+ */
 router.get('/', usersGet);
 
+/**
+ * @openapi
+ * /api/usuarios:
+ *  post:
+ *   tags:
+ *   - Usuarios
+ *   requestBody:
+ *     content:
+ *       'application/json':
+ *         schema:
+ *          properties:
+ *             ID_Pais: 
+ *               description: Id del pais al que pertenece
+ *               type: integer
+ *             Nombre:
+ *               description: Nombre del usuario
+ *               type: string
+ *             Apellidos:
+ *               description: Apellidos del usuario
+ *               type: string
+ *             Telefono:
+ *               description: Telefono del usuario
+ *               type: string
+ *             Ciudad:
+ *               description: Ciudad del usuario
+ *               type: string
+ *             Fecha_Nacimiento:
+ *              description: Fecha de nacimiento del usuario
+ *              type: string
+ *              format: YYYY-MM-DD
+ *             Sitio_Trabajo:
+ *              description: Sitio de trabajo del usuario
+ *              type: string
+ *   responses:
+ *     '200':
+ *       description: Usuario creado correctamente.
+ *       content: 
+ *         'application/json': {}
+ *     '400':
+ *       description: Bad request.
+ *       content: 
+ *         'application/json': { }
+ */
 router.post('/',
     [
         check('Nombre').notEmpty().withMessage('El nombre es obligatorio').isLength({ max: 100, min: 3 }).withMessage('Debe tener entre 3 y 100 caracteres'),
@@ -19,6 +72,56 @@ router.post('/',
         validarCampos
     ], usersPost);
 
+/**
+ * @openapi
+ * /api/usuarios/{id}:
+ *  put:
+ *   tags:
+ *   - Usuarios
+ *   parameters:
+ *   - name: id
+ *     in: path
+ *     description: ID del usuario a actualizar
+ *     required: true
+ *     schema:
+ *       type: integer
+ *   requestBody:
+ *     content:
+ *       'application/json':
+ *         schema:
+ *          properties:
+ *             ID_Pais: 
+ *               description: Id del pais al que pertenece
+ *               type: integer
+ *             Nombre:
+ *               description: Nombre del usuario
+ *               type: string
+ *             Apellidos:
+ *               description: Apellidos del usuario
+ *               type: string
+ *             Telefono:
+ *               description: Telefono del usuario
+ *               type: string
+ *             Ciudad:
+ *               description: Ciudad del usuario
+ *               type: string
+ *             Fecha_Nacimiento:
+ *              description: Fecha de nacimiento del usuario
+ *              type: string
+ *              format: YYYY-MM-DD
+ *             Sitio_Trabajo:
+ *              description: Sitio de trabajo del usuario
+ *              type: string
+ *   responses:
+ *     '200':
+ *       description: Usuario actualizado correctamente.
+ *       content: 
+ *         'application/json': {}
+ *     '400':
+ *       description: Bad request.
+ *       content: 
+ *         'application/json': { }
+ */
 router.put('/:id',
     [
         check('id').notEmpty().withMessage('El id es obligatorio').isNumeric().withMessage('El id debe ser un numero'),
@@ -32,6 +135,29 @@ router.put('/:id',
         validarCampos
     ], usersPut);
 
+/**
+ * @openapi
+ * /api/usuarios/{id}:
+ *  delete:
+ *   tags:
+ *   - Usuarios
+ *   parameters:
+ *   - name: id
+ *     in: path
+ *     description: ID del usuario a actualizar
+ *     required: true
+ *     schema:
+ *       type: integer
+ *   responses:
+ *     '200':
+ *       description: Usuario elimnado correctamente.
+ *       content: 
+ *         'application/json': {}
+ *     '400':
+ *       description: Bad request.
+ *       content: 
+ *         'application/json': { }
+ */
 router.delete('/:id',
     [
         check('id').notEmpty().withMessage('El id es obligatorio').isNumeric().withMessage('El id debe ser un numero'),
